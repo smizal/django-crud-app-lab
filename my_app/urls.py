@@ -3,24 +3,25 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path('', views.Home.as_view(), name='home'),
-    # path('about/', views.about, name='about'),
-    # path('cats/', views.cat_index, name='cat-index'),
-    # path('cats/<int:cat_id>', views.cat_detail, name='cat-detail'),
-    # #  CBV's for Create, Update and Delete
-    # path('cats/create/', views.CatCreate.as_view(), name='cat-create'),
-    # path('cats/<int:pk>/update/', views.CatUpdate.as_view(), name='cat-update'),
-    # path('cats/<int:pk>/delete/', views.CatDelete.as_view(), name='cat-delete'),
-    # path('cats/<int:cat_id>/add-feeding/', views.add_feeding, name='add-feeding'),
+    path('', views.Home.as_view(), name='home'),
+    
+    # # CBV's path for Event model 
+    path('events/', views.EventList.as_view(), name='event-index'),
+    path('events/<int:event_id>', views.event_detail, name='event-detail'),
+    # path('events/<int:pk>', views.EventDetail.as_view(), name='event-detail'),
+    path('events/<int:pk>/update/', views.EventUpdate.as_view(), name='event-update'),
+    path('events/<int:pk>/delete/', views.EventDelete.as_view(), name='event-delete'),
+    path('events/create/', views.EventCreate.as_view(), name='event-create'),
+    
+    path('features/', views.FeatureList.as_view(), name='feature-index'),
+    path('features/<int:pk>', views.FeatureDetail.as_view(), name='feature-detail'),
+    path('features/<int:pk>/update/', views.FeatureUpdate.as_view(), name='feature-update'),
+    path('features/<int:pk>/delete/', views.FeatureDelete.as_view(), name='feature-delete'),
+    path('features/create/', views.FeatureCreate.as_view(), name='feature-create'),
 
-    # # CBV's path for Toy model 
-    # path('toys/', views.ToyList.as_view(), name='toy-index'),
-    # path('toys/<int:pk>', views.ToyDetail.as_view(), name='toy-detail'),
-    # path('toys/create/', views.ToyCreate.as_view(), name='toy-create'),
-    # path('toys/<int:pk>/update/', views.ToyUpdate.as_view(), name='toy-update'),
-    # path('toys/<int:pk>/delete/', views.ToyDelete.as_view(), name='toy-delete'),
+    path('events/<int:event_id>/add-room/', views.add_room, name='add-room'),
 
-    # path('cats/<int:cat_id>/associate-toy/<int:toy_id>/', views.associate_toy, name='associate-toy'),
-    # path('cats/<int:cat_id>/remove-toy/<int:toy_id>/', views.remove_toy, name='remove-toy'),
-    # path('accounts/signup/', views.signup, name='signup'),
+    path('events/<int:event_id>/associate-feature/<int:feature_id>/', views.associate_feature, name='associate-feature'),
+    path('events/<int:event_id>/remove-feature/<int:feature_id>/', views.remove_feature, name='remove-feature'),
+    path('accounts/signup/', views.signup, name='signup'),
 ]

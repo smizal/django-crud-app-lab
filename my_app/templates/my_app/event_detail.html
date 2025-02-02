@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/cats/cat-detail.css' %}" />
+  <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/mcdp.css' %}" />
+  <!-- MCDatepicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
+  <!-- Existing CSS -->
+  <link rel="stylesheet" href="{% static 'css/cats/cat-detail.css' %}" />
+  <script defer src="{% static 'js/cat-detail.js' %}"></script>
+{% endblock %}
+{% block content %}
+  <section class="cat-container">
+    <div class="cat-img">
+      <img src="{% static 'images/sk8r-boi-cat.svg' %}" alt="A skater boy cat" />
+    </div>
+    <div class="cat-details">
+      <h1>{{ event.title }}</h1>
+      <h3>{{ event.date }}</h3>
+      <p>{{ event.description }}</p>
+
+      <div class="cat-actions">
+        <a href="{% url 'event-update' event.id %}" class="btn warn">Edit</a>
+        <a href="{% url 'event-delete' event.id %}" class="btn danger">Delete</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="feedings-toy-container">
+    <section class="feedings">
+      <div class="subsection-title">
+        <h2>Rooms</h2>
+        <img src="{% static 'images/cat-cone.svg' %}" alt="An ice cream cone cat" />
+        <img src="{% static 'images/cat-onigiri.svg' %}" alt="A cat as onigiri" />
+        <img src="{% static 'images/kitty-kabob.svg' %}" alt="A kabob of kittens" />
+      </div>
+
+      <h3>Add a Room</h3>
+      <form action="{% url 'add-room' event.id %}" method="post" class="subsection-content" autocomplete="off">
+        {% csrf_token %}
+        {{ room_form.as_p }}
+        <button type="submit" class="btn submit">Add Room</button>
+      </form>
+
+      <br /><br />
+      <h3>Past Rooms</h3>
+      {% if event.room_set.all.count %}
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Room</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for room in event.room_set.all %}
+              <tr>
+                <td>{{ room.date }}</td>
+                <td>{{ room.get_room_display }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="subsection-content">
+          <p>⚠️ {{ event.title }} has no room!</p>
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="toys">
+      <div class="subsection-title">
+        <h2>Features</h2>
+        <img src="{% static 'images/string.svg' %}" alt="A ball of string" />
+        <img src="{% static 'images/mouse.svg' %}" alt="A mouse" />
+        <img src="{% static 'images/fish.svg' %}" alt="A fishy toy" />
+      </div>
+      <h3>{{ event.title }}'s Features</h3>
+      <div class="subsection-content">
+        {% if event.features.count %}
+          {% for feature in event.features.all %}
+            <div class="toy-container">
+              <div class="color-block" style="background-color: {{ feature.color }}"></div>
+              <a href="{% url 'feature-detail' feature.id %}"><p>{{ feature.title }}</p></a>
+              <form action="{% url 'remove-feature' event.id feature.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Remove Feature</button>
+              </form>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="no-toys">{{ event.title }} doesn't have any feature!</p>
+        {% endif %}
+      </div>
+
+      <h3>Available Features</h3>
+      <div class="subsection-content">
+        {% if features.count %}
+          {% for feature in features.all %}
+            <div class="toy-container">
+              <div class="color-block" style="background-color: {{ feature.color }}"></div>
+              <a href="{% url 'feature-detail' feature.id %}"><p>{{ feature.title }}</p></a>
+              <form action="{% url 'associate-feature' event.id feature.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn submit">Add Feature</button>
+              </form>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="all-toys">{{ event.title }} already has all the available features 🥳</p>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+{% endblock %}

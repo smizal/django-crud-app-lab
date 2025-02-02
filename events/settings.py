@@ -121,7 +121,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 LOGIN_URL = 'home'
-LOGIN_REDIRECT_URL = 'cat-index'
+LOGIN_REDIRECT_URL = 'event-index'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Default primary key field type

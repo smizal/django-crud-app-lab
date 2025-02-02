@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/form.css' %}" />
+  <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/mcdp.css' %}" />
+  <!-- MCDatepicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
+  <!-- Existing CSS -->
+  <link rel="stylesheet" href="{% static 'css/cats/cat-detail.css' %}" />
+  <script defer src="{% static 'js/cat-detail.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+  <div class="page-header">
+    {% if object %}
+      <h1>Edit {{ object.name }}</h1>
+    {% else %}
+      <h1>Add Event</h1>
+    {% endif %}
+    <img src="{% static 'images/nerd-cat.svg' %}" alt="A cat using a computer" />
+  </div>
+
+  <form action="" method="post" class="form-container">
+    {% csrf_token %}
+    <table>{{ form.as_table }}</table>
+    <button type="submit" class="btn submit">Submit!</button>
+  </form>
+{% endblock %}
